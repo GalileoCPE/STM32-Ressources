@@ -20,19 +20,27 @@ Encodeur::Encodeur(char e, int resolution, int diametre) {
   }
   m_resolution = resolution * 4 - 1;  // *4 car l'encodeur détecte tous les fronts des 2 signaux
   m_diametre = diametre;
+  m_ticks_par_mm = (float)m_resolution / (float)(M_PI * m_diametre);
+
   m_tours = -1;  // -1 -> 0 au démarrage (car une interruption est déclenchée)
 
   EncodeurInit(encodeur, m_timer, TIMx, m_resolution);
 }
 
 // Getters & Setters:
-uint16_t Encodeur::getCount() { return __HAL_TIM_GET_COUNTER(m_timer); }
-int Encodeur::getTours() { return m_tours; }
 void Encodeur::updateTour(int dtour) { m_tours += dtour; }
-int Encodeur::getDist() {
-  return M_PI * m_diametre *
-         (m_tours + (float)getCount() / (float)m_resolution);
-}
+uint16_t Encodeur::getCount() { return __HAL_TIM_GET_COUNTER(m_timer); }
+int Encodeur::getTotalCount() { return m_tours * m_resolution + getCount(); }
+int Encodeur::getDist() { return M_PI * m_diametre * (m_tours + (float)getCount() / (float)m_resolution); }
+
+// Attributs:
+int Encodeur::getTours() { return m_tours; }
+int Encodeur::getDiametre() { return m_diametre; }
+int Encodeur::getResolution() { return m_resolution; }
+float Encodeur::getTicks_par_mm() { return m_ticks_par_mm; }
+
+// Pointeur:
+int* Encodeur::getTours_ptr() { return &m_tours; }
 
 // Initialisation du Timer pour l'Encodeur:
 void EncodeurInit(TIM_Encoder_InitTypeDef* encodeur, TIM_HandleTypeDef* timer, TIM_TypeDef* TIMx, uint32_t resolution) {

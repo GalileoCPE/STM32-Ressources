@@ -16,8 +16,9 @@ DigitalOut led(LED1);
 
 int main() {
   printf("STM32 Encodeur\r\n");
-  printf("Adresse encodeurG.tours = %p\r\n", &encodeurG.m_tours);
-  printf("Adresse encodeurD.tours = %p\r\n", &encodeurD.m_tours);
+  printf("Adresses de variables: (pour STM-Studio)"
+  printf(" - encodeurG.tours = %p\r\n", encodeurG.getTours_ptr());
+  printf(" - encodeurD.tours = %p\r\n", encodeurD.getTours_ptr());
 
   while (true) {
     uint16_t countG = encodeurG.getCount();
