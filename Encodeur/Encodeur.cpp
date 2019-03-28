@@ -28,19 +28,31 @@ Encodeur::Encodeur(char e, int resolution, int diametre) {
 }
 
 // Getters & Setters:
-void Encodeur::updateTour(int dtour) { m_tours += dtour; }
 uint16_t Encodeur::getCount() { return __HAL_TIM_GET_COUNTER(m_timer); }
-int Encodeur::getTotalCount() { return m_tours * m_resolution + getCount(); }
-int Encodeur::getDist() { return M_PI * m_diametre * (m_tours + (float)getCount() / (float)m_resolution); }
-
-// Attributs:
 int Encodeur::getTours() { return m_tours; }
+int* Encodeur::getTours_ptr() { return &m_tours; }
+void Encodeur::updateTour(int dtour) { m_tours += dtour; }
+
+int Encodeur::getDist() { return M_PI * m_diametre * (m_tours + (float)getCount() / (float)m_resolution); }
+int Encodeur::getTotalCount() {
+  int encodeur_tour = m_tours;
+
+  // Détecte si le compteur s'est réinitialisé sans ajouter le tour :
+  // (c'est-à-dire TIMx_IRQHandler ne s'est pas encore déclenché)
+  if (__HAL_TIM_GET_FLAG(m_timer, TIM_FLAG_UPDATE) != RESET) {
+    // Récupère la direction de rotation de l'encodeur:
+    bool direction = __HAL_TIM_IS_TIM_COUNTING_DOWN(m_timer);
+
+    // Ajoute ou enlève un tour:
+    encodeur_tour += direction ? -1 : 1;
+  }
+
+  return encodeur_tour * m_resolution + getCount();
+}
+
 int Encodeur::getDiametre() { return m_diametre; }
 int Encodeur::getResolution() { return m_resolution; }
 float Encodeur::getTicks_par_mm() { return m_ticks_par_mm; }
-
-// Pointeur:
-int* Encodeur::getTours_ptr() { return &m_tours; }
 
 // Initialisation du Timer pour l'Encodeur:
 void EncodeurInit(TIM_Encoder_InitTypeDef* encodeur, TIM_HandleTypeDef* timer, TIM_TypeDef* TIMx, uint32_t resolution) {

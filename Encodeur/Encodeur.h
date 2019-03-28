@@ -18,17 +18,14 @@ class Encodeur {
   // Getters & Setter:
   uint16_t getCount();
   int getTotalCount();
-  int getDist();  // en mm
-  void updateTour(int);
-
-  // Attributs:
   int getTours();
+  int* getTours_ptr();
+  void updateTour(int);
+  int getDist();  // en mm
+
   int getDiametre();  // en mm
   int getResolution();
   float getTicks_par_mm();
-
-  // Pointeur:
-  int* getTours_ptr();
 
  private:
   int m_tours;
