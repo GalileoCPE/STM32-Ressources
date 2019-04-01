@@ -8,7 +8,7 @@ Ensemble de programmes pour utiliser des capteurs et actionneurs avec une carte 
 
 ## Actionneurs :
   - [Driver moteur L298N](./Driver%20moteur%20L298N) : contrôle d'un moteur alimenté avec un driver L298N
-  - [Moteur pas à pas](./Moteur%20pas%20à%20pas) : todo
+  - [Stepper](./Stepper) : contrôle d'un moteur pas à pas
   - [Servomoteur](./Servomoteur) : todo
 
 

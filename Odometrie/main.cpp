@@ -6,8 +6,8 @@
 
 // Paramètres des encodeurs:
 #define encodeur_res 2000
-#define encodeur_diametre 57          // en mm
-#define encodeurs_entraxe 130 / 2.0f  // en mm
+#define encodeur_diametre 70          // en mm
+#define encodeurs_entraxe 120 / 2.0f  // en mm
 
 // Paramètre de l'odométrie:
 #define update_delay_us 500  // en µs

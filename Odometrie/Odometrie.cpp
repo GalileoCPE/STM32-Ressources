@@ -22,7 +22,7 @@ Odometrie::Odometrie(Encodeur* encodeurG, Encodeur* encodeurD, float entraxe, in
   printf("Entraxe en ticks : %f\n\r", m_entraxe_ticks);
 
   // Mesure du déplacement toutes les <update_delay_us> µs:
-  m_ticker.attach_us(callback(this, &Odometrie::update), update_delay_us);  // 2 kHz pour 500 µs
+  m_ticker.attach_us(callback(this, &Odometrie::update), update_delay_us);  // 2 kHz pour 500 us
 }
 
 // Getters:
@@ -35,7 +35,7 @@ float* Odometrie::getX_ptr() { return &m_X; }
 float* Odometrie::getY_ptr() { return &m_Y; }
 float* Odometrie::getTheta_ptr() { return &m_Theta; }
 
-// Mise à jour de la position et de l'orientation:
+// Selon le ClubElek:
 void Odometrie::update() {
   // Récupère les compteurs des encodeurs:
   int encodeurG_count = m_encodeurG->getTotalCount();

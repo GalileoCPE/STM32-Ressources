@@ -20,5 +20,5 @@ Stepper(int steps, PinName pin_1, PinName pin_2, PinName pin_3, PinName pin_4);
 
 ## Informations utiles
 - Classe grandement inspirée de la classe [`Servo`](https://github.com/esp8266/Arduino/tree/master/libraries/Servo/src) utilisée pour Arduino.
-- **!!!** : Ne pas brancher directement le moteur pas à pas sur la carte STM32. Utiliser un **driver moteur** pour cela, et brancher les pins de la même manière qu'ils auraient été sur le moteur (c'est-à-dire dans le même ordre).
+- **!!!** : Ne pas brancher directement le moteur pas à pas sur la carte STM32. Utiliser un **driver moteur** pour cela, et brancher les pins de la même manière qu'ils auraient été sur le moteur (c'est-à-dire dans le même ordre) (+ ne pas oublier de relier les **masses** entre la STM32 et le driver).
 - Utilise la librairie [Mbed OS 5](https://os.mbed.com/) pour configurer facilement le microcontrôleur et utiliser la classe `Ticker` pour exécuter une fonction à intervalle régulié.
