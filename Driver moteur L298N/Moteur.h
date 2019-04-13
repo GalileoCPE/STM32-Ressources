@@ -12,14 +12,18 @@ class Moteur {
   void forward();
   void backward();
   void stop();
+  void turn(float pwm);
 
   // Setter:
-  void setPWM(float pwm);  // entre 0 et 1
+  void setPWM(float pwm);      // entre 0 et 1
+  void setPWM_max(float pwm);  // entre 0 et 1
 
  private:
   PwmOut m_pwm;
   DigitalOut m_in1;
   DigitalOut m_in2;
+
+  float m_pwm_max;
 };
 
 #endif

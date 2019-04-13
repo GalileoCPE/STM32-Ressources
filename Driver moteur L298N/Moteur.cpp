@@ -5,10 +5,13 @@ Moteur::Moteur(PinName pin_en, PinName pin_in1, PinName pin_in2)
 
   m_pwm.period_us(100.0f);  // Fréquence = 10 kHz pour 100 µs
 
+  // PWM maximale qui peut être envoyée avec la commande turn():
+  m_pwm_max = 0.5;
 }
 
 // Setter:
 void Moteur::setPWM(float pwm) { m_pwm = pwm; }
+void Moteur::setPWM_max(float pwm) { m_pwm_max = pwm; }
 
 
 /*** Déplacement ***/
@@ -28,4 +31,18 @@ void Moteur::backward() {
 // Arrêt:
 void Moteur::stop() {
   m_pwm.write(0.0f);  // Duty cycle
+}
+
+// Contrôle du moteur par valeur de pwm:
+// (! : la valeur est limitée par m_pwm_max)
+void Moteur::turn(float pwm) {
+  if (pwm < 0) {
+    if (pwm < -m_pwm_max) pwm = -m_pwm_max;
+    setPWM(-pwm);
+    backward();
+  } else {
+    if (pwm > m_pwm_max) pwm = m_pwm_max;
+    setPWM(pwm);
+    forward();
+  }
 }
