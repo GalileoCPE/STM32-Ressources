@@ -1,13 +1,15 @@
 #include "Odometrie.h"
 
-Odometrie::Odometrie(Encodeur* encodeurG, Encodeur* encodeurD, float entraxe, int update_delay_us) {
+Odometrie::Odometrie(Encodeur* encodeurG, Encodeur* encodeurD, float entraxe) {
   m_encodeurG = encodeurG;
   m_encodeurD = encodeurD;
 
   m_L = 0.0f;
   m_X = 0.0f;
   m_Y = 0.0f;
-  m_Theta = 0.0f;
+  m_Theta = 0;
+  m_vitesse = 0.0f;
+  m_distance = 0.0f;
 
   m_prev_encodeurG_count = m_encodeurG->getTotalCount();
   m_prev_encodeurD_count = m_encodeurD->getTotalCount();
@@ -20,20 +22,21 @@ Odometrie::Odometrie(Encodeur* encodeurG, Encodeur* encodeurD, float entraxe, in
 
   printf("Ticks par mm : %f\n\r", m_ticks_par_mm);
   printf("Entraxe en ticks : %f\n\r", m_entraxe_ticks);
-
-  // Mesure du déplacement toutes les <update_delay_us> µs:
-  m_ticker.attach_us(callback(this, &Odometrie::update), update_delay_us);  // 2 kHz pour 500 us
 }
 
 // Getters:
 float Odometrie::getX() { return m_X; }
 float Odometrie::getY() { return m_Y; }
 float Odometrie::getTheta() { return m_Theta; }
+float Odometrie::getDistance() { return m_distance; }
+float Odometrie::getVitesse() { return m_vitesse; }
 
 // Pointeurs:
 float* Odometrie::getX_ptr() { return &m_X; }
 float* Odometrie::getY_ptr() { return &m_Y; }
 float* Odometrie::getTheta_ptr() { return &m_Theta; }
+float* Odometrie::getDistance_ptr() { return &m_distance; }
+float* Odometrie::getVitesse_ptr() { return &m_vitesse; }
 
 // Selon le ClubElek:
 void Odometrie::update() {
@@ -57,6 +60,12 @@ void Odometrie::update() {
   float dY = dL * sin(m_Theta);
   m_X += dX / m_ticks_par_mm;
   m_Y += dY / m_ticks_par_mm;
+
+  // Vitesse:
+  m_vitesse = dL;
+
+  // Distance :
+  m_distance += dL;
 
   // Sauvegarde:
   m_prev_encodeurG_count = encodeurG_count;

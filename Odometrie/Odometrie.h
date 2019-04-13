@@ -7,7 +7,7 @@
 class Odometrie {
  public:
   // Constructeur:
-  Odometrie(Encodeur* encodeurG, Encodeur* encodeurD, float entraxe, int update_delay_us);
+  Odometrie(Encodeur* encodeurG, Encodeur* encodeurD, float entraxe);
 
   void update();
 
@@ -15,15 +15,19 @@ class Odometrie {
   float getX();
   float getY();
   float getTheta();
+  float getDistance();
+  float getVitesse();
 
   // Pointeurs:
   float* getX_ptr();
   float* getY_ptr();
   float* getTheta_ptr();
+  float* getDistance_ptr();
+  float* getVitesse_ptr();
 
  private:
   // Position et orientation:
-  float m_L, m_X, m_Y, m_Theta;
+  float m_L, m_X, m_Y, m_Theta, m_distance, m_vitesse;
 
   // Encodeurs:
   Encodeur* m_encodeurG;
@@ -31,9 +35,6 @@ class Odometrie {
   float m_ticks_par_mm, m_entraxe_ticks;
 
   int m_prev_encodeurG_count, m_prev_encodeurD_count;
-
-  // Ticker:
-  Ticker m_ticker;
 };
 
 #endif
