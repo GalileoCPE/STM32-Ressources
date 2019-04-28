@@ -29,6 +29,7 @@ float Odometrie::getX() { return m_X; }
 float Odometrie::getY() { return m_Y; }
 float Odometrie::getTheta() { return m_Theta; }
 float Odometrie::getDistance() { return m_distance; }
+float Odometrie::getRealDistance() { return m_distance / m_ticks_par_mm; }
 float Odometrie::getVitesse() { return m_vitesse; }
 
 // Pointeurs:

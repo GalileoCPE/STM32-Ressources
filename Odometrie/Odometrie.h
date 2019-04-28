@@ -16,6 +16,7 @@ class Odometrie {
   float getY();
   float getTheta();
   float getDistance();
+  float getRealDistance();
   float getVitesse();
 
   // Pointeurs:
