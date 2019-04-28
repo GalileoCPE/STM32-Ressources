@@ -7,12 +7,14 @@ Moteur::Moteur(PinName pin_en, PinName pin_in1, PinName pin_in2)
 
   // PWM maximale qui peut être envoyée avec la commande turn():
   m_pwm_max = 0.5;
+
+  m_offset = 0.0f;
 }
 
 // Setter:
-void Moteur::setPWM(float pwm) { m_pwm = pwm; }
-void Moteur::setPWM_max(float pwm) { m_pwm_max = pwm; }
-
+void Moteur::setPWM(float pwm) { m_pwm = pwm + m_offset; }
+void Moteur::setPWM_max(float pwm) { m_pwm_max = pwm + m_offset; }
+void Moteur::setOffset(float offset) { m_offset = offset; }
 
 /*** Déplacement ***/
 
@@ -37,10 +39,12 @@ void Moteur::stop() {
 // (! : la valeur est limitée par m_pwm_max)
 void Moteur::turn(float pwm) {
   if (pwm < 0) {
+    pwm -= m_offset;
     if (pwm < -m_pwm_max) pwm = -m_pwm_max;
     setPWM(-pwm);
     backward();
   } else {
+    pwm += m_offset;
     if (pwm > m_pwm_max) pwm = m_pwm_max;
     setPWM(pwm);
     forward();

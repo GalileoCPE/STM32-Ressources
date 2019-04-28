@@ -15,8 +15,9 @@ class Moteur {
   void turn(float pwm);
 
   // Setter:
-  void setPWM(float pwm);      // entre 0 et 1
-  void setPWM_max(float pwm);  // entre 0 et 1
+  void setPWM(float pwm);        // entre 0 et 1
+  void setPWM_max(float pwm);    // entre 0 et 1
+  void setOffset(float offset);  // entre 0 et 1
 
  private:
   PwmOut m_pwm;
@@ -24,6 +25,7 @@ class Moteur {
   DigitalOut m_in2;
 
   float m_pwm_max;
+  float m_offset;
 };
 
 #endif
