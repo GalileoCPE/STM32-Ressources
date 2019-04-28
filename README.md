@@ -14,4 +14,5 @@ Ensemble de programmes pour utiliser des capteurs et actionneurs avec une carte 
 
 ## Autres :
   - [Odométrie](./Odometrie) : détermine la position et l'orientation d'une base, à l'aide de deux encodeurs
-  - [Asservissement](./Asservissement) : todo
+  - [Asservissement](./Asservissement) : calcul l'erreur entre une valeur désirée et la valeur actuelle
+  - [Base](./Base) : pour une base composée de 2 [moteurs](./Driver%20moteur%20L298N) et de 2 [encodeurs](./Encodeur), détermine, à partir de l'[odométrie](./Odometrie), comment alimenter les moteurs pour atteindre une position désirée, grâce à l'[asservissement](./Asservissement)
