@@ -13,10 +13,13 @@ class Stepper {
 
   // Rotation:
   void step(int steps);
+  void stepWithStop(int steps, DigitalIn* limit_switch, bool state_to_stop);
 
  private:
-  void stepMotor(int this_step);
+  void step_init(int steps);
   void update();
+  void updateWithStop();
+  void stepMotor(int this_step);
 
   // Variables du déplacement:
   int m_direction;
@@ -28,6 +31,12 @@ class Stepper {
   DigitalOut m_pin_2;
   DigitalOut m_pin_3;
   DigitalOut m_pin_4;
+
+  // Capteur fin de course:
+  DigitalIn* m_limit_switch;
+
+  // Etat du capteur fin de course pour arrêter le déplacement:
+  bool m_switch_state_stop;
 
   // Ticker:
   Ticker m_ticker;

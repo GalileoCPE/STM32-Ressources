@@ -13,8 +13,8 @@ void Stepper::setSpeed(long speed) {
   m_step_delay_us = 60L * 1000L * 1000L / m_steps / speed;
 }
 
-// Démarre le déplacement du moteur de <steps_to_move> pas, avec Ticker:
-void Stepper::step(int steps_to_move) {
+// Etape d'initilisation pour un déplacement:
+void Stepper::step_init(int steps_to_move) {
   m_steps_left = abs(steps_to_move);
 
   // Direction:
@@ -23,6 +23,12 @@ void Stepper::step(int steps_to_move) {
 
   // Arrête le déplacement en cours (s'il y en un 1):
   m_ticker.detach();
+}
+
+// Démarre le déplacement du moteur de <steps_to_move> pas, avec Ticker:
+void Stepper::step(int steps_to_move) {
+  // Initialisation du déplacement:
+  step_init(steps_to_move);
 
   // Démarre le déplacement demandé:
   m_ticker.attach_us(callback(this, &Stepper::update), m_step_delay_us);
@@ -46,6 +52,33 @@ void Stepper::update() {
 
   // Si fin du déplacement:
   if (m_steps_left == 0) m_ticker.detach();
+}
+
+// Démarre le déplacement du moteur de <steps_to_move> pas, avec Ticker et s'arrête si fin de course activé:
+void Stepper::stepWithStop(int steps_to_move, DigitalIn* limit_switch, bool state_to_stop) {
+  // Initialisation du déplacement:
+  step_init(steps_to_move);
+
+  // Entrée du capteur de fin de course:
+  m_limit_switch = limit_switch;
+
+  // Etat pour arrêter le déplacement:
+  m_switch_state_stop = state_to_stop;
+
+  // Démarre le déplacement demandé:
+  m_ticker.attach_us(callback(this, &Stepper::updateWithStop), m_step_delay_us);
+}
+
+// Mise à jour du déplacement avec arrêt:
+void Stepper::updateWithStop() {
+  // Vérifie l'état du capteur de fin de course:
+  if (*m_limit_switch == m_switch_state_stop) {
+    // Arrête le déplacement en cours:
+    m_ticker.detach();
+  } else {
+    // Etape de déplacement du moteur:
+    update();
+  }
 }
 
 // Déplace le moteur en avant ou en arrière d'un pas:
