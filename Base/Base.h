@@ -7,7 +7,7 @@
 #include "mbed.h"
 
 #ifndef M_PI
-#define M_PI 3.14159265358979323846
+#define M_PI 3.14159265358979323846f
 #endif
 
 class Base {
@@ -16,8 +16,12 @@ class Base {
   Base(Moteur*, Moteur*, Odometrie*, int);
 
   // Déplacement:
-  void setDistanceTo(float);
-  void setOrientationTo(float o);
+  void moveTo(float x, float y, float theta);
+  void start();
+  void stop();
+  void forward(float);
+  void backward(float);
+  void turn(float);  // °
 
   // PID:
   void setPID_distance(float P, float I, float D);
@@ -31,20 +35,43 @@ class Base {
   float* getPID_PWM_gauche_ptr();
   float* getPID_PWM_droite_ptr();
 
+  // Getters:
+  float getErreurDistance();
+  float getErreurOrientation();
+
+  // Setters:
+  void setActualDistance();
+  void setActualOrientation();
+
+  // Moteurs:
+  void forwardMoteur(float, float);
+  void backwardMoteur(float, float);
+
  private:
   // Moteurs:
   Moteur* m_moteurG;
   Moteur* m_moteurD;
+  bool m_moteurs_isEnabled;
 
   // Odometrie:
   Odometrie* m_odometrie;
 
+  // Position:
+  float m_x, m_y, m_theta;
+
   // Asservissement distance et orientation:
   Asservissement m_asservissement_distance;
   Asservissement m_asservissement_orientation;
+  float m_pos_distance;
+  float m_pos_orientation;
+  void setDistanceTo(float);
+  void setOrientationTo(float o);
+  float m_max_erreur_distance, m_max_erreur_orientation;
+  float m_distance_orientation_ratio;
 
   // PWM maximale envoyée au moteurs:
   float m_pwm_max;
+  float m_pwm_dynamic;
 
   // Debug:
   float m_erreur_distance, m_erreur_orientation;
